@@ -1,11 +1,13 @@
 #!/usr/bin/env python
+
+# This code implements takes HSBC statements in HTML format
+# downloaded from hsbc.co.uk and dumps them into a JSON file.
 import re, sys
 from xml.dom import minidom
 import xml.parsers.expat, time, json, datetime
 from optparse import OptionParser
 
 state_date_regex =r'Statement date:.+?<div class="hsbcTextRight">(.*?)</div>'
-
 account_no_regex = """<div class="hsbcAccountNumber">(.*?)</div>"""
 
 class Transaction(object):
@@ -49,12 +51,6 @@ def extract_from_html(path):
                   row.append("")
          if len(row) > 0:
              rows.append(row)
-     for i,row in enumerate(rows):
-          print row
-#          if row[0]=="":
-#               raise IOError("No date field for row %d" % i)
-          if row[2]=="":
-               raise IOError("No description field for row %d" %i)
      return rows
 
 def extract_extra(path):
